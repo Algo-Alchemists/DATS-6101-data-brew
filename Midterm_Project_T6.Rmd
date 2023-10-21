@@ -1,58 +1,33 @@
----
-title: "Midterm_Project_T6"
-output: html_document
-date: "2023-10-20"
----
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r}
+#Checking count of missing values if they are from the same observations
+missing_gender_and_income <- sum(is.na(profile$gender) & is.na(profile$income))
+print("Count of missing values in both gender and income:")
+print(missing_gender_and_income)
 ```
 
-## Data Brew: Brewing Success with Starbucks Customer Insights
-The data is contained in three files:
-
-portfolio.csv - data about offers sent to customers (10 offers x 6 columns)
-
-profile.csv - demographic data of customers (17,000 customers x 5 columns)
-
-transcript.csv - customer response to offers and transactions made (306,648 events x 4 columns)
-
-
-```{r, results='markup'}
-# Importing and reading the Datasets 
-transcript<-read.csv("transcript.csv")
-head(transcript)
-print("The structure of Transcript:")
-str(transcript)
-
-portfolio<-read.csv("portfolio.csv")
-head(portfolio)
-print("The structure of Portfolio:")
-str(portfolio)
-
-profile<-read.csv("profile.csv")
-head(profile)
-print("The structure of Profile:")
-str(profile)
+```{r}
+missing_gender_and_income_together <- profile[is.na(profile$gender) & is.na(profile$income), ]
+missing_gender_and_income_together
 ```
-```{r, results='markup'}
-#Checking for the Missing values in each column of the dataframes
-transcript_missing_values <- colSums(is.na(transcript))
-print("Missing values in transcript:")
-print(transcript_missing_values)
 
 
-portfolio_missing_values <- colSums(is.na(portfolio))
-print("Missing values in portfolio:")
-print(portfolio_missing_values)
-
-
-profile$gender[profile$gender == ""] <- NA #Filling empty spaces with NA values
-profile_missing_values <- colSums(is.na(profile))
-print("Missing values in profile:")
-print(profile_missing_values)
+```{r}
+#Remove NA values
+profile_updated <- na.omit(profile)
+profile_updated
 ```
 ```{r}
+#Checking the columns with numerical data 
+numcols <- names(profile_updated)[sapply(profile_updated, is.numeric)]
+numcols
+
+```
+
+```{r}
+#Converting became_member_on to datetime format
+profile_updated$became_member_on <- as.Date(as.character(profile_updated$became_member_on), format = "%Y%m%d")
+profile_updated
 
 ```
 
@@ -61,4 +36,21 @@ print(profile_missing_values)
 
 
 
-```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
