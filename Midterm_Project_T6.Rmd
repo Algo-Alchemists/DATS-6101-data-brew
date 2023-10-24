@@ -1034,6 +1034,43 @@ INTERPRETATIONS:
 
 To conclude, based on the completions, discount offer had an upper hand as it attracted many customers.
 
+
+```{r}
+# Offer Preferences by Age Group
+age_offer_counts <- final %>%
+  group_by(age_group, offer_type) %>%
+  summarize(count = n()) 
+
+
+# Plotting the offer type preferences by age group
+ggplot(age_offer_counts, aes(x = age_group, y = count, fill = offer_type)) +
+  geom_bar(stat = 'identity', position = 'dodge') +
+  labs(title = 'Offer Type Preferences by Age Group',
+       x = 'Age Group',
+       y = 'Count') +
+  theme_minimal() +
+    theme(axis.text.x = element_text(angle = 50, vjust = 1, hjust = 1)) 
+
+```
+
+```{r}
+# Offer Preferences by Age Group
+age_offer_counts <- final %>%
+  group_by(age_group, offer_type) %>%
+  summarize(count = n()) 
+
+
+# Plotting the offer type preferences by age group
+ggplot(age_offer_counts, aes(x = age_group, y = count, fill = offer_type)) +
+  geom_bar(stat = 'identity', position = 'dodge') +
+  labs(title = 'Offer Type Preferences by Age Group',
+       x = 'Age Group',
+       y = 'Count') +
+  theme_minimal() +
+    theme(axis.text.x = element_text(angle = 50, vjust = 1, hjust = 1)) 
+
+```
+
 ```{r}
 #Offer Type Preferences by Gende
 offer_counts <- table(final$gender, final$offer_type)
@@ -1059,3 +1096,32 @@ This indicates the engagement patterns with different offer types such as BOGO, 
 
 3) Other gender categories are nearly ignorable when compared to men and women.
 
+```{r}
+income_offer_counts <- final %>%
+  group_by(income_group, offer_type) %>%
+  summarize(count = n())
+
+# Plotting the offer type preferences by income range
+ggplot(income_offer_counts, aes(x = income_group, y = count, fill = offer_type)) +
+  geom_bar(stat = 'identity', position = 'dodge') +
+  labs(title = 'Offer Type Preferences by Income Range',
+       x = 'Income Range',
+       y = 'Count') +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) 
+```
+
+```{r}
+income_offer_counts <- final %>%
+  group_by(income_group, offer_type) %>%
+  summarize(count = n())
+
+# Plotting the offer type preferences by income range
+ggplot(income_offer_counts, aes(x = income_group, y = count, fill = offer_type)) +
+  geom_bar(stat = 'identity', position = 'dodge') +
+  labs(title = 'Offer Type Preferences by Income Range',
+       x = 'Income Range',
+       y = 'Count') +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) 
+```
