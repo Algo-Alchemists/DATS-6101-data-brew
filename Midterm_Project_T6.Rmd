@@ -197,7 +197,6 @@ head(df_cust_offer)
 ```
 ## MERGING ALL THE CSV FILES FOR BETTER RESULTS
 Merging the datasets based on common columns like customer_id,id and value_data
-
 ```{r}
 # df_offers and df_cust_offers
 merged_df <- merge(df_cust_offer, customers, by.x = "customer_id", by.y = "id")
