@@ -50,34 +50,7 @@ head(df_cust)
 print("The structure of Profile:")
 str(df_cust)
 ```
-## MERGING ALL THE CSV FILES FOR BETTER RESULTS
 
-```{r}
-# df_offers and df_cust_offers
-merged_df <- merge(df_cust_offer, customers, by.x = "customer_id", by.y = "id")
-head(merged_df)
-#customers and merged_df
-final <- merge(merged_df,df_offers , by.x = "value_data", by.y = "id")
-final
-```
-
-**Categorical and Numerical variables of final df:**
-
-```{r}
-#checking numerical cols of final df
-numerical_cols <- sapply(final, is.numeric)
-numerical_colnames <- names(final)[numerical_cols]
-
-categorical_colnames <- names(final)[!numerical_cols]
-
-max_length <- max(length(numerical_colnames), length(categorical_colnames))
-
-numerical_colnames <- c(numerical_colnames, rep(NA, max_length - length(numerical_colnames)))
-categorical_colnames <- c(categorical_colnames, rep(NA, max_length - length(categorical_colnames)))
-var_df <- data.frame(Numeric = numerical_colnames, Categorical = categorical_colnames)
-
-print(var_df)
-```
 
 ```{r, results='markup'}
 #Checking for the Missing values in each column of the dataframes
@@ -141,6 +114,10 @@ head(cust_numcols)
 #Converting became_member_on to datetime format
 df_customer_no_na$became_member_on <- as.Date(as.character(df_customer_no_na$became_member_on), format = "%Y%m%d")
 head(df_customer_no_na)
+
+# Save checkpoint after data cleaning
+customers <- data.frame(df_customer_no_na)
+```
 ```
 
 ```{r}
@@ -180,11 +157,6 @@ tail(df_cust_offer)
 Add an alias to each offer for easier recognition and referencing.
 
 ```{r}
-#before transforming
-head(df_offers)
-```
-
-```{r}
 # Load required library
 library(dplyr)
 # Sort df_offer by offer_type and difficulty
@@ -222,6 +194,35 @@ head(df_cust_offer_subset)
 ```{r}
 df_cust_offer<- df_cust_offer_subset
 head(df_cust_offer)
+```
+## MERGING ALL THE CSV FILES FOR BETTER RESULTS
+Merging the datasets based on common columns like customer_id,id and value_data
+
+```{r}
+# df_offers and df_cust_offers
+merged_df <- merge(df_cust_offer, customers, by.x = "customer_id", by.y = "id")
+head(merged_df)
+#customers and merged_df
+final <- merge(merged_df,df_offers , by.x = "value_data", by.y = "id")
+final
+```
+
+**Categorical and Numerical variables of final df:**
+
+```{r}
+#checking numerical cols of final df
+numerical_cols <- sapply(final, is.numeric)
+numerical_colnames <- names(final)[numerical_cols]
+
+categorical_colnames <- names(final)[!numerical_cols]
+
+max_length <- max(length(numerical_colnames), length(categorical_colnames))
+
+numerical_colnames <- c(numerical_colnames, rep(NA, max_length - length(numerical_colnames)))
+categorical_colnames <- c(categorical_colnames, rep(NA, max_length - length(categorical_colnames)))
+var_df <- data.frame(Numeric = numerical_colnames, Categorical = categorical_colnames)
+
+print(var_df)
 ```
 
 ## **EDA on transcripts data:**
@@ -399,12 +400,6 @@ The indices of all three Series are the same, signifying the hours elapsed since
 
 
 ### **EDA on Customer Data:**
-
-```{r}
-head(df_customer_no_na)
-# Save checkpoint after data cleaning
-customers <- data.frame(df_customer_no_na)
-```
 
 ## *What is the profile of the customer base, including their gender distribution, age distribution, and income range, and how do these factors relate to each other?*
 
