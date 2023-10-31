@@ -50,6 +50,34 @@ head(df_cust)
 print("The structure of Profile:")
 str(df_cust)
 ```
+## MERGING ALL THE CSV FILES FOR BETTER RESULTS
+
+```{r}
+# df_offers and df_cust_offers
+merged_df <- merge(df_cust_offer, customers, by.x = "customer_id", by.y = "id")
+head(merged_df)
+#customers and merged_df
+final <- merge(merged_df,df_offers , by.x = "value_data", by.y = "id")
+final
+```
+
+**Categorical and Numerical variables of final df:**
+
+```{r}
+#checking numerical cols of final df
+numerical_cols <- sapply(final, is.numeric)
+numerical_colnames <- names(final)[numerical_cols]
+
+categorical_colnames <- names(final)[!numerical_cols]
+
+max_length <- max(length(numerical_colnames), length(categorical_colnames))
+
+numerical_colnames <- c(numerical_colnames, rep(NA, max_length - length(numerical_colnames)))
+categorical_colnames <- c(categorical_colnames, rep(NA, max_length - length(categorical_colnames)))
+var_df <- data.frame(Numeric = numerical_colnames, Categorical = categorical_colnames)
+
+print(var_df)
+```
 
 ```{r, results='markup'}
 #Checking for the Missing values in each column of the dataframes
@@ -1221,8 +1249,23 @@ ggplot(df_offers, aes(x = as.factor(difficulty), fill = channels)) +
 
 ```{r}
 #Distribution of Number of Channels per Offer
-channels_count <- sapply(df_offers$channels, function(x) length(unlist(strsplit(x, ','))))
-barplot(table(channels_count), main='Distribution of Number of Channels per Offer', col='#EF9595', xlab='Number of Channels', ylab='Count')
+# Assuming channels_count and table(channels_count) are already defined
+
+# Assuming channels_count and table(channels_count) are already defined
+
+# Define your own colors
+colors <- c("#EFF6EE", "#273043", "#9197AE")
+
+# Count the occurrences of each number of channels
+channels_table <- table(channels_count)
+
+# Create a pie chart with custom colors and labels
+pie(channels_table, main='Distribution of Number of Channels per Offer', col=colors, labels=channels_table)
+
+# Add a legend with custom labels
+legend("topright", legend=c("2", "3", "4"), fill=colors, title="Number of Channels")
+
+
 
 
 ```
@@ -1230,33 +1273,8 @@ barplot(table(channels_count), main='Distribution of Number of Channels per Offe
 OBSERVATION: The above observation shows that the combination of 3
 channels had the maximum count per offer.
 
-## MERGING ALL THE CSV FILES FOR BETTER RESULTS
 
-```{r}
-# df_offers and df_cust_offers
-merged_df <- merge(df_cust_offer, customers, by.x = "customer_id", by.y = "id")
-head(merged_df)
-#customers and merged_df
-final <- merge(merged_df,df_offers , by.x = "value_data", by.y = "id")
-head(final)
-```
-**Categorical and Numerical variables of final df:**
 
-```{r}
-#checking numerical cols of final df
-numerical_cols <- sapply(final, is.numeric)
-numerical_colnames <- names(final)[numerical_cols]
-
-categorical_colnames <- names(final)[!numerical_cols]
-
-max_length <- max(length(numerical_colnames), length(categorical_colnames))
-
-numerical_colnames <- c(numerical_colnames, rep(NA, max_length - length(numerical_colnames)))
-categorical_colnames <- c(categorical_colnames, rep(NA, max_length - length(categorical_colnames)))
-var_df <- data.frame(Numeric = numerical_colnames, Categorical = categorical_colnames)
-
-print(var_df)
-```
 
 ```{r}
 colors <- c("#ad6a6c", "#d0ada7", "#e8d6cb")
@@ -1344,8 +1362,7 @@ groups.
 offer_counts <- table(final$gender, final$offer_type)
 offer_counts_df <- as.data.frame(offer_counts)
 colnames(offer_counts_df) <- c('gender', 'offer_type', 'count')  
-colors <- c("#ad6a6c", "#d0ada7", "#e8d6cb")
-
+ 
 # Plot using ggplot2
 ggplot(offer_counts_df, aes(x = gender, y = count, fill = offer_type)) +
   geom_bar(stat = 'identity', position = 'dodge') +
@@ -1406,12 +1423,22 @@ ggplot(final_other, aes(x = age_group, fill = event)) +
   theme_minimal() +scale_fill_manual(values = colors)+
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
 ```
+```{r}
+ggplot(final, aes(x = age_group, fill = event)) +
+  geom_bar(position = 'dodge') +
+  labs(title = 'Offer Acceptance by Age Group',
+       x = 'Age Group',
+       y = 'Count',
+       fill = 'Event Type') +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
+```
 
 ## HYPOTHESIS TESTING(CHI SQUARE)
 
 ```{r}
 contingency_table <- table(final$gender, final$age_group)
-
+contingency_table
 # Perform the chi-squared test
 chi_squared_result <- chisq.test(contingency_table)
 
@@ -1439,3 +1466,4 @@ is strong evidence to suggest that "gender" and "age_group" are not
 independent of each other, and there is a significant
 relationship between them.
 
+```{r}
