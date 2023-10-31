@@ -189,6 +189,11 @@ head(df_cust_offer_subset)
 df_cust_offer<- df_cust_offer_subset
 head(df_cust_offer)
 ```
+```{r}
+df_offers
+df_cust_offer
+customers
+```
 
 #### Dividing customers into age groups:
 
@@ -204,13 +209,19 @@ customers$age_group <- cut(customers$age, breaks = age_bins, labels = age_labels
 ## MERGING ALL THE CSV FILES FOR BETTER RESULTS
 
 Merging the datasets based on common columns like customer_id,id and value_data
-
 ```{r}
-# df_offers and df_cust_offers
-merged_df <- merge(df_cust_offer, customers, by.x = "customer_id", by.y = "id")
-head(merged_df)
-#customers and merged_df
-final <- merge(merged_df,df_offers , by.x = "value_data", by.y = "id")
+# Merge df_offers and df_cust_offer on the common column 'id'
+merged_df <- left_join(customers, df_cust_offer,by = c('id' = 'customer_id'))
+merged_df
+final_merged_df <- full_join(merged_df, df_offers, by = c('value_data' = 'id'))
+final_merged_df
+print(head(final_merged_df))
+
+```
+```{r}
+na_counts <- colSums(is.na(final_merged_df))
+print(na_counts)
+final<-na.omit(final_merged_df)
 final
 ```
 
