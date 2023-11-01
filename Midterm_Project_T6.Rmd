@@ -1731,6 +1731,7 @@ ggplot(final_other, aes(x = age_group, fill = event)) +
        fill = 'Event Type') +
   theme_minimal() +scale_fill_manual(values = colors)+
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
+
 ```
 
 ## HYPOTHESIS TESTING(CHI SQUARE)
