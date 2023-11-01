@@ -1731,17 +1731,13 @@ ggplot(final_other, aes(x = age_group, fill = event)) +
        fill = 'Event Type') +
   theme_minimal() +scale_fill_manual(values = colors)+
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
-
 ```
 
 ## HYPOTHESIS TESTING(CHI SQUARE)
 
 ```{r}
 contingency_table <- table(final$gender, final$age_group)
-# Perform the chi-squared test
 chi_squared_result <- chisq.test(contingency_table)
-
-# View the result
 print(chi_squared_result)
 ```
 
