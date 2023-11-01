@@ -1754,7 +1754,6 @@ are not independent of each other.
 
 **P-Value:** The p-value associated with the test statistic is less than
 2.2e-16, which is essentially zero.
-
 Given the extremely low p-value (essentially zero), we can conclude that
 there is a significant association or relationship between the two
 categorical variables tested in the chi-squared test (likely "gender"
