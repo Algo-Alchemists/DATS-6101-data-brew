@@ -1357,9 +1357,10 @@ barplot(p0,
         cex.main = 1.8, 
         cex.lab = 1.5, 
         cex.axis = 1.2)
+anim <- animate(plot, nframes = 100, fps = 10)
+
 
 ```
-
 Observation: Each of the ten offers received a similar number of times, with approximately 7,600 receptions for each offer. The distribution of offer receptions was consistent, indicating that there was no significant discrepancy in how often different offers were received by customers.
 
 
@@ -1551,20 +1552,11 @@ plot, it is clearly visible that combination of all the four channels
 leads.
 
 ```{r}
-#Correlation between rewards, difficulty and duration
-correlation_matrix <- cor(df_offers[, c('reward', 'difficulty', 'duration')])
-heatmap(correlation_matrix, main='Correlation between rewards, difficulty and duration',cexRow = 1,cexCol = 1)
-
+colors <- c("#EFF6EE", "#273043", "#9197AE","darkgray")
+pie(channel_counts$count, labels = channel_counts$channels, main='Distribution of Number of Channels per Offer', col=colors)
+legend("bottomleft", legend=channel_counts$count, fill=colors, title="Occurance of Channels")
 ```
-
-INTERPRETATION
-
-The above observations shows that the variables reward and difficulty ,
-reward and duration had a positive correlation indicating that with
-increase in reward, duration and the difficulty will also increase.
-
-Difficulty and reward also seems to have a positive correlation
-indicating that increase in difficulty tends to increase the reward.
+OBSERVATION: The above observation shows that the combination of 3 channels had the maximum count per offer.
 
 ```{r}
 #Offers based on difficulty and channels through which they are offered
@@ -1591,34 +1583,6 @@ barplot(table(channels_count), main='Distribution of Number of Channels per Offe
 
 OBSERVATION: The above observation shows that the combination of 3
 channels had the maximum count per offer.
-
-## MERGING ALL THE CSV FILES FOR BETTER RESULTS
-
-```{r}
-# df_offers and df_cust_offers
-merged_df <- merge(df_cust_offer, customers, by.x = "customer_id", by.y = "id")
-head(merged_df)
-#customers and merged_df
-final <- merge(merged_df,df_offers , by.x = "value_data", by.y = "id")
-head(final)
-```
-**Categorical and Numerical variables of final df:**
-
-```{r}
-#checking numerical cols of final df
-numerical_cols <- sapply(final, is.numeric)
-numerical_colnames <- names(final)[numerical_cols]
-
-categorical_colnames <- names(final)[!numerical_cols]
-
-max_length <- max(length(numerical_colnames), length(categorical_colnames))
-
-numerical_colnames <- c(numerical_colnames, rep(NA, max_length - length(numerical_colnames)))
-categorical_colnames <- c(categorical_colnames, rep(NA, max_length - length(categorical_colnames)))
-var_df <- data.frame(Numeric = numerical_colnames, Categorical = categorical_colnames)
-
-print(var_df)
-```
 
 ```{r}
 colors <- c("#ad6a6c", "#d0ada7", "#e8d6cb")
