@@ -1734,7 +1734,6 @@ ggplot(final_other, aes(x = age_group, fill = event)) +
 ```
 
 ## HYPOTHESIS TESTING(CHI SQUARE)
-
 ```{r}
 contingency_table <- table(final$gender, final$age_group)
 chi_squared_result <- chisq.test(contingency_table)
@@ -1758,6 +1757,6 @@ and "age_group"). In other words, we reject the null hypothesis (H0)
 that there is no association between these variables. Therefore, there
 is strong evidence to suggest that "gender" and "age_group" are not
 independent of each other, and there is a significant
-relationship between them.
+relationship between the variables.
 
 ##
